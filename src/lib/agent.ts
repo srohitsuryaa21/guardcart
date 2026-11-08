@@ -309,15 +309,15 @@ export async function runAgent(opts: {
       { signal: opts.signal },
     );
     stream.on("thinking", (delta) => opts.emit({ type: "thinking", delta }));
-    // Text from separate assistant turns (before and after tool calls) is shown
-    // as one reply, so separate the turns with a paragraph break.
-    let textThisStep = false;
-    stream.on("text", (delta) => {
-      if (!textThisStep && textSoFar) opts.emit({ type: "text", delta: "\n\n" });
-      textThisStep = true;
-      textSoFar = true;
-      opts.emit({ type: "text", delta });
+    // All text blocks (within a message and across tool-call turns) are shown
+    // as one reply, so start each new text block on a new paragraph.
+    stream.on("streamEvent", (event) => {
+      if (event.type === "content_block_start" && event.content_block.type === "text") {
+        if (textSoFar) opts.emit({ type: "text", delta: "\n\n" });
+        textSoFar = true;
+      }
     });
+    stream.on("text", (delta) => opts.emit({ type: "text", delta }));
 
     let message: Anthropic.Beta.BetaMessage;
     try {
