@@ -91,7 +91,11 @@ Use the **Personal** sandbox account from Developer Dashboard → Testing Tools 
 
 ## Deploy (Render)
 
-Create a **Web Service** from this repo: build command `npm install && npm run build`, start command `npm start`, and add the environment variables above.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/srohitsuryaa21/guardcart)
+
+The repo includes a [`render.yaml`](render.yaml) Blueprint. Click the button (or **New → Blueprint** in Render and pick this repo), then fill in `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` and `ANTHROPIC_API_KEY` when prompted. Render builds with `npm ci && npm run build` and starts with `npm start`.
+
+On Render's free plan the service sleeps after about 15 minutes without traffic, and the first request after that takes up to a minute to wake it.
 
 ## License
 
