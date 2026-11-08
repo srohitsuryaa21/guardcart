@@ -290,6 +290,7 @@ export async function runAgent(opts: {
   ];
   const messages = () => [...opts.history, ...newMessages];
   let jsonRetries = 0;
+  let textSoFar = false;
 
   for (let step = 0; step < MAX_STEPS; step++) {
     const stream = client.beta.messages.stream(
@@ -308,7 +309,15 @@ export async function runAgent(opts: {
       { signal: opts.signal },
     );
     stream.on("thinking", (delta) => opts.emit({ type: "thinking", delta }));
-    stream.on("text", (delta) => opts.emit({ type: "text", delta }));
+    // Text from separate assistant turns (before and after tool calls) is shown
+    // as one reply, so separate the turns with a paragraph break.
+    let textThisStep = false;
+    stream.on("text", (delta) => {
+      if (!textThisStep && textSoFar) opts.emit({ type: "text", delta: "\n\n" });
+      textThisStep = true;
+      textSoFar = true;
+      opts.emit({ type: "text", delta });
+    });
 
     let message: Anthropic.Beta.BetaMessage;
     try {
