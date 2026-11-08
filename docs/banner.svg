@@ -23,13 +23,7 @@
       .sans { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
       .mono { font-family: 'Cascadia Code', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
       @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-      @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
       .blocked { animation: pulse 2.4s ease-in-out infinite; }
-      .r1 { animation: fade .6s ease-out both .1s; }
-      .r2 { animation: fade .6s ease-out both .5s; }
-      .r3 { animation: fade .6s ease-out both .9s; }
-      .r4 { animation: fade .6s ease-out both 1.3s; }
-      .r5 { animation: fade .6s ease-out both 1.7s; }
     </style>
   </defs>
 
